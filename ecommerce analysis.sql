@@ -1,17 +1,12 @@
--- ============================================================
 -- PROJECT: E-Commerce Sales Analysis
 -- Tool: PostgreSQL
--- Author: Lewis Brian
+-- Author: Tita Lewis
 -- Description: Sales performance analysis across customers,
 --              products, and orders for an online retail store.
--- ============================================================
 
 
 -- ============================================================
--- STEP 1: CREATE TABLES
--- ============================================================
--- We need three tables. The orders table references both
--- customers and products via foreign keys, so create those two first.
+-- 1: CREATE TABLES
 
 CREATE TABLE customers (
     customer_id   SERIAL PRIMARY KEY,
@@ -39,12 +34,7 @@ CREATE TABLE orders (
 
 
 -- ============================================================
--- STEP 2: IMPORT DATA
--- ============================================================
--- After creating the tables, import the CSV files using
--- pgAdmin: right-click each table → Import/Export Data →
--- select the CSV → toggle Header ON → click OK.
---
+-- 2: IMPORT DATA
 -- Import order matters because of foreign keys:
 --   1. customers.csv
 --   2. products.csv
@@ -52,11 +42,7 @@ CREATE TABLE orders (
 
 
 -- ============================================================
--- STEP 3: EXPLORE THE DATA
--- ============================================================
--- Always look at what you're working with before jumping
--- into analysis. Check for obvious issues, unexpected values,
--- or missing data.
+-- 3: EXPLORE THE DATA
 
 -- Preview each table
 SELECT * FROM customers;
@@ -70,8 +56,7 @@ SELECT COUNT(*) AS total_orders    FROM orders;
 
 
 -- ============================================================
--- STEP 4: TOTAL REVENUE PER PRODUCT
--- ============================================================
+-- 4: TOTAL REVENUE PER PRODUCT
 -- Join orders to products so we can calculate revenue.
 -- Revenue = quantity × price. We rank by highest revenue first.
 
@@ -87,8 +72,7 @@ ORDER BY total_revenue DESC;
 
 
 -- ============================================================
--- STEP 5: TOP 5 CUSTOMERS BY TOTAL SPEND
--- ============================================================
+-- 5: TOP 5 CUSTOMERS BY TOTAL SPEND
 -- We need two JOINs here: one to get the customer's name,
 -- and another to get the product price so we can calculate spend.
 
@@ -107,10 +91,8 @@ LIMIT 5;
 
 
 -- ============================================================
--- STEP 6: MONTHLY REVENUE TREND
--- ============================================================
--- TO_CHAR formats the date into a readable YYYY-MM string
--- so we can group by month and see if revenue is growing.
+-- 6: MONTHLY REVENUE TREND
+-- TO_CHAR formats the date into a readable YYYY-MM string.
 
 SELECT
     TO_CHAR(o.order_date, 'YYYY-MM') AS month,
@@ -123,12 +105,9 @@ ORDER BY month;
 
 
 -- ============================================================
--- STEP 7: REVENUE BY CATEGORY WITH PERCENTAGE SHARE (CTE)
--- ============================================================
--- A CTE (WITH clause) lets us calculate category totals first,
+-- 7: REVENUE BY CATEGORY WITH PERCENTAGE SHARE (CTE)
+-- A CTE to let us calculate category totals first,
 -- then reference those totals to add a percentage column.
--- SUM() OVER () without PARTITION BY gives the grand total
--- across all rows, which we divide into to get the share.
 
 WITH category_revenue AS (
     SELECT
@@ -149,11 +128,8 @@ ORDER BY total_revenue DESC;
 
 
 -- ============================================================
--- STEP 8: RANK CUSTOMERS BY SPEND (WINDOW FUNCTION)
--- ============================================================
--- RANK() assigns position 1 to the highest spender.
--- Unlike GROUP BY, window functions don't collapse rows —
--- each customer keeps their own row with a rank attached.
+-- 8: RANK CUSTOMERS BY SPEND (WINDOW FUNCTION)
+-- RANK() to assign position 1 to the highest spender.
 
 SELECT
     c.first_name || ' ' || c.last_name AS full_name,
@@ -170,8 +146,7 @@ ORDER BY spend_rank;
 
 
 -- ============================================================
--- STEP 9: CUSTOMER SPEND TIERS (CASE WHEN)
--- ============================================================
+-- 9: CUSTOMER SPEND TIERS (CASE WHEN) 
 -- CASE WHEN works like an IF/ELSE. Here we segment customers
 -- into three value tiers based on their total spend.
 -- Useful for targeting loyalty programmes or marketing campaigns.
