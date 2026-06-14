@@ -1,21 +1,21 @@
 # E-Commerce Sales Analysis (SQL)
 
-**Author:** Lewis Brian | [titalewis218@gmail.com](mailto:titalewis218@gmail.com) | [LinkedIn](https://www.linkedin.com/in/tita-lewis-brian-zua-669ab42a0)
+**Author:** Tita Lewis | [titalewis218@gmail.com](mailto:titalewis218@gmail.com) | [LinkedIn](https://www.linkedin.com/in/tita-lewis-brian-zua-669ab42a0)
 
-## What This Project Is About
+## Project Rundown
 
 I wanted to work through a realistic retail scenario using SQL, so I built a small e-commerce database from scratch with three related tables covering customers, products, and orders, and ran a full analysis on top of it.
 
 The business question I was trying to answer was: who are our best customers, which products are actually making us money, and is revenue growing over time? These are the kinds of questions I’d expect to get from a sales or operations team, so I tried to write queries that answer them directly rather than just showing off syntax.
 
-## Tools
+## Tools Used
 
 - **PostgreSQL** (version 15)
 - **pgAdmin 4**
 
 ## Dataset
 
-Three CSV files are in the `/data` folder. Import them into PostgreSQL in this order to avoid foreign key errors:
+Three CSV files are in the `/data` folder.
 
 1. `customers.csv` - 15 customers with their city and join date
 1. `products.csv` - 10 products across Electronics, Footwear, and Fitness categories
